@@ -4,8 +4,8 @@ go 1.25.0
 
 require (
 	github.com/alicebob/miniredis/v2 v2.38.0
-	github.com/exaring/otelpgx v0.10.0
-	github.com/go-chi/chi/v5 v5.2.5
+	github.com/exaring/otelpgx v0.11.1
+	github.com/go-chi/chi/v5 v5.3.0
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
 	github.com/hibiken/asynq v0.26.0
