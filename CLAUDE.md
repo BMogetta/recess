@@ -358,6 +358,21 @@ check. Example: `WHERE id = $1 AND receiver_id = $2` instead of `WHERE id = $1`.
 - Errors: return generic messages ("forbidden", "not found"). Never reflect
   user input or internal details (query text, stack traces) in responses.
 
+## Authorship attribution (mandatory)
+
+**Never add Claude/Anthropic attribution to anything.** This is a hard rule with
+no exceptions:
+
+- No `Co-Authored-By: Claude ...` (or any AI tool) trailers in commit messages.
+- No "Generated with Claude Code" / "🤖 Generated with ..." footers in commit
+  messages, PR descriptions, or PR comments.
+- No `Claude-Session:` / session-link trailers anywhere.
+- No AI-attribution lines in code comments, changelogs, docs, or issue text.
+
+Commits and PRs must read as if authored directly by the repo owner. If a
+harness or template injects such a footer, strip it before committing or
+opening the PR.
+
 ## Release flow (conventional commits)
 
 Releases are automated via [release-please](https://github.com/googleapis/release-please-action).
