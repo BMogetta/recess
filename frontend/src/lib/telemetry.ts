@@ -107,7 +107,7 @@ if (!TELEMETRY_DISABLED) {
   const logExporter = new OTLPLogExporter({ url: `${COLLECTOR_BASE}/v1/logs` })
   const loggerProvider = new LoggerProvider({
     resource,
-    processors: [new SimpleLogRecordProcessor(logExporter)],
+    processors: [new SimpleLogRecordProcessor({ exporter: logExporter })],
   })
   const logger = loggerProvider.getLogger('recess-frontend')
 
