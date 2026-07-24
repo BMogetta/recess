@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.3-alpha.1](https://github.com/BMogetta/recess/compare/ws-gateway-v0.2.2-alpha.1...ws-gateway-v0.2.3-alpha.1) (2026-07-24)
+
+
+### Bug Fixes
+
+* unblock CI govulncheck across all Go modules ([#222](https://github.com/BMogetta/recess/issues/222)) ([5acf403](https://github.com/BMogetta/recess/commit/5acf403b19862a920ab8959bf318f644c2f374bf))
+
 ## [0.2.2-alpha.1](https://github.com/BMogetta/recess/compare/ws-gateway-v0.2.1-alpha.1...ws-gateway-v0.2.2-alpha.1) (2026-05-16)
 
 
