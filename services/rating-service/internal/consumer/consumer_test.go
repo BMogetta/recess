@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"log/slog"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -18,14 +19,27 @@ import (
 
 type mockProcessor struct {
 	calls atomic.Int64
+	mu    sync.Mutex
 	last  events.GameSessionFinished
 	err   error
 }
 
 func (m *mockProcessor) ProcessGameFinished(_ context.Context, evt events.GameSessionFinished) error {
-	m.calls.Add(1)
+	// Write `last` under the mutex before bumping the atomic counter, so a
+	// test that observes calls==1 is guaranteed a fully-written `last` when
+	// it reads via lastEvent(). Without this the consumer goroutine's write
+	// races the test goroutine's read (surfaced under `go test -race`).
+	m.mu.Lock()
 	m.last = evt
+	m.mu.Unlock()
+	m.calls.Add(1)
 	return m.err
+}
+
+func (m *mockProcessor) lastEvent() events.GameSessionFinished {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	return m.last
 }
 
 func newHandlerOnly(p *mockProcessor) *Consumer {
@@ -60,14 +74,15 @@ func TestHandle_ValidGameSessionFinished(t *testing.T) {
 	if mock.calls.Load() != 1 {
 		t.Fatalf("expected 1 call, got %d", mock.calls.Load())
 	}
-	if mock.last.SessionID != sessionID {
-		t.Errorf("expected session_id %s, got %s", sessionID, mock.last.SessionID)
+	last := mock.lastEvent()
+	if last.SessionID != sessionID {
+		t.Errorf("expected session_id %s, got %s", sessionID, last.SessionID)
 	}
-	if mock.last.GameID != "tictactoe" {
-		t.Errorf("expected game_id tictactoe, got %s", mock.last.GameID)
+	if last.GameID != "tictactoe" {
+		t.Errorf("expected game_id tictactoe, got %s", last.GameID)
 	}
-	if mock.last.Mode != "ranked" {
-		t.Errorf("expected mode ranked, got %s", mock.last.Mode)
+	if last.Mode != "ranked" {
+		t.Errorf("expected mode ranked, got %s", last.Mode)
 	}
 }
 
@@ -123,8 +138,8 @@ func TestConsumer_StreamsIntegration(t *testing.T) {
 	if mock.calls.Load() != 1 {
 		t.Fatalf("expected exactly 1 delivery, got %d", mock.calls.Load())
 	}
-	if mock.last.SessionID != sessionID {
-		t.Errorf("session_id mismatch: got %s want %s", mock.last.SessionID, sessionID)
+	if last := mock.lastEvent(); last.SessionID != sessionID {
+		t.Errorf("session_id mismatch: got %s want %s", last.SessionID, sessionID)
 	}
 }
 
