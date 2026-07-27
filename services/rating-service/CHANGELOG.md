@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3-alpha.1](https://github.com/BMogetta/recess/compare/rating-service-v0.4.2-alpha.1...rating-service-v0.4.3-alpha.1) (2026-07-27)
+
+
+### Bug Fixes
+
+* **rating-service:** synchronize mockProcessor.last in consumer test ([#252](https://github.com/BMogetta/recess/issues/252)) ([78cebfe](https://github.com/BMogetta/recess/commit/78cebfe5a070b0151e0b682a16a8b3a3c29a7455))
+
 ## [0.4.2-alpha.1](https://github.com/BMogetta/recess/compare/rating-service-v0.4.1-alpha.1...rating-service-v0.4.2-alpha.1) (2026-07-24)
 
 
