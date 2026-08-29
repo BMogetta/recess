@@ -1,5 +1,5 @@
 # Build stage (pinned to the build host's native arch; cross-compile via GOARCH).
-FROM --platform=$BUILDPLATFORM golang:1.26-alpine@sha256:80fbb8f9b2fa541a7d34378f1ad10f4f1c433817c4ed39ddb3e2f3ec3e961271 AS builder
+FROM --platform=$BUILDPLATFORM golang:1.27-alpine@sha256:4c9fe60190a2a3350ddc51de80d0224b8a6698d12bdfc999fee45ea9d6c46dbc AS builder
 ARG TARGETOS
 ARG TARGETARCH
 WORKDIR /app
